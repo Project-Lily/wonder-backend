@@ -20,5 +20,3 @@ def create_app(conf=None):
     controllers.register_all_blueprints(app)
 
     return app
-
-app = create_app()
