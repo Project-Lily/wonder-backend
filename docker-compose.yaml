@@ -1,0 +1,24 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./etc/letsencrypt:/etc/letsencrypt
+      - ./nginx/nginx.conf:/etc/nginx/templates/default.conf.template
+      - ./data/certbot:/var/www/certbot
+      - ./assets:/var/www/data:rw
+    environment:
+      - NGINX_DOMAIN=${DOMAIN}
+
+  certbot:
+    image: certbot/certbot
+    depends_on:
+      - nginx
+    volumes:
+    - ./etc/letsencrypt:/etc/letsencrypt
+    - ./data/certbot:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

@@ -1,7 +1,7 @@
 const path = require("path");
 const http = require("http");
 const express = require("express");
-const { initWs } = require("./service/wss")
+const { initWs } = require("./service/websocket")
 
 // Server stuff
 const app = express();
@@ -13,8 +13,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", api)
 
-
 const PORT = process.env.PORT || 3000;
 httpServer.listen(PORT, () => {
-    console.log("server listening on ", PORT)
+    console.log("Server listening on ", PORT)
 });
