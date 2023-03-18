@@ -1,5 +1,18 @@
 version: "3"
 services:
+  flask-utils:
+    container_name: flaks-utils
+    build: ./flask-utils
+    ports:
+      - "8080:8080"
+
+
+  wonder-socket:
+    container_name: wonder-socket
+    build: ./socket
+    ports:
+      - "3000:3000"
+
   nginx:
     container_name: nginx
     image: nginx:latest

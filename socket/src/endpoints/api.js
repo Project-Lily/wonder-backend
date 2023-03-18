@@ -10,17 +10,23 @@ router.post("/sender", function (req, res) {
     const id = req.body.id;
     if(!id in clientPool) return "ID not found in client pool";
 
-    const socket = clientPool[id];
+    const senderSocket = clientPool[id];
     const roomName = getRoomName(req.ip);
 
     // Initializes the room
-    clientRooms[roomName] = { 
-        "sender" : socket,
+    clientRooms[roomName] = {
+        "sender" : senderSocket,
         "receiver" : []
     }
 
-    socket.on("message", (data) => {
+    senderSocket.on("message", (data) => {
+        // Handle browsers sending messages
         const jsonData = JSON.parse(data);
+        if(jsonData.eventName === "SEND_QUESTION") {
+
+        } else {
+            console.log("Unknown event name")
+        }
         console.log(jsonData);
     })
 
@@ -39,6 +45,7 @@ router.post("/receiver", function (req, res) {
     clientRooms[roomName].receiver.push(socket);
 
     socket.on("message", (data) => {
+        // Handle devices sending messages
         const jsonData = JSON.parse(data);
         console.log(jsonData)
     })
