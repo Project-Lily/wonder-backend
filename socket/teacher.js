@@ -6,7 +6,7 @@ ws.onopen = (data) => {
         // Creates room and destroys own listener, this is so that this listener doesn't mess with future events
         createRoom(data.data)
     }
-    console.log("Connected") 
+    console.log("Connected")
 }
 
 function createRoom(data) {
@@ -27,3 +27,9 @@ function createRoom(data) {
         ws.onmessage = (data) => { console.log(data.data) }
     });
 }
+
+// ws.send(JSON.stringify({
+//     "eventName" : "SEND_QUESTION",
+//     "question" : "whatever",
+//     "answer" : "the right answer"
+// }))

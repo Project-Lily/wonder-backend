@@ -1,7 +1,7 @@
 // Demo example for a teacher connection
 ws = new WebSocket("wss://lilly.arichernando.com/socket")
 ws.onopen = (data) => {
-    ws.onmessage = (data) =>{
+    ws.onmessage = (data) => {
         console.log(`My id is : ${data.data}`)
         joinRoom(data.data)
     }
