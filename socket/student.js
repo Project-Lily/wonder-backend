@@ -1,5 +1,5 @@
 // Demo example for a teacher connection
-ws = new WebSocket("wss://lilly.arichernando.com/socket/")
+ws = new WebSocket("wss://lilly.arichernando.com/socket")
 ws.onopen = (data) => {
     ws.onmessage = (data) =>{
         console.log(`My id is : ${data.data}`)
@@ -9,11 +9,12 @@ ws.onopen = (data) => {
 }
 
 function joinRoom(data) {
-    fetch("http://localhost:3000/student/join", {
+    fetch("http://lilly.arichernando.com/student/join", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*'
         },
         body: JSON.stringify({
             "id" : data,

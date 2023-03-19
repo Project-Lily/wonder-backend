@@ -4,7 +4,7 @@ services:
     container_name: flask-utils
     build: ./flask-utils
     ports:
-      - "8080:8080"
+      - "5000:5000"
 
   wonder-socket:
     container_name: wonder-socket
