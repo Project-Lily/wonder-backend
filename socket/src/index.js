@@ -13,13 +13,6 @@ const student = require("./endpoints/student.js");
 
 app.use(cors())
 app.set('trust proxy', true)
-app.use(function (req,res,next) {
-    console.log("Original url : " , req.originalUrl);
-    const removedString = "/node"
-    req.originalUrl = req.originalUrl.replace(removedString, '')
-    req.path = req.path.replace(removedString, '')
-    return next()
-})
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/teacher", teacher)

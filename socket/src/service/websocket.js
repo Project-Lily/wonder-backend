@@ -19,7 +19,7 @@ function initWs(httpServer){
         clientPool[client.id] = client;
         client.send(`${client.id}`);
 
-        console.log("Client connected");
+        console.log("Client connected : ", req.ip);
     })
 
     return wss;
