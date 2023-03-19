@@ -9,7 +9,7 @@ ws.onopen = (data) => {
 }
 
 function joinRoom(data) {
-    fetch("http://lilly.arichernando.com/node/student/join", {
+    fetch("https://lilly.arichernando.com/node/student/join", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
