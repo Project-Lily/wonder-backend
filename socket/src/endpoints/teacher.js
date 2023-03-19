@@ -13,7 +13,6 @@ router.post("/join", function (req, res) {
 
     const teacherSocket = clientPool[id];
     const roomName = utils.getRoomName(req.ip);
-
     // Initializes the room
     clientRooms[roomName] = {
         "teacher" : teacherSocket,
@@ -30,7 +29,7 @@ router.post("/join", function (req, res) {
         else console.log("Unknown event name : ", jsonData.eventName);
     })
     
-    console.log(`Room created at: ${roomName}`)
+    console.log(`Teacher at ${req.ip} has joined room ${roomName}`)
     return res.status(200).json({msg: "Room succesfully joined"});
 });
 

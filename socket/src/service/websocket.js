@@ -14,12 +14,9 @@ function initWs(httpServer){
     wss.on("error", console.error)
     wss.on("connection", (client, req) => {
         const ip = req.socket.remoteAddress;
-
         client.id = wss.getUniqueId();
         clientPool[client.id] = client;
         client.send(`${client.id}`);
-
-        console.log("Client connected : ", ip);
     })
 
     return wss;

@@ -28,6 +28,7 @@ router.post("/join", function (req, res) {
         else console.log("Unknown event name : ", jsonData.eventName);
     })
     
+    console.log(`A Student at ${req.ip} has joined room ${roomName}`)
     return res.status(200).json({msg: "Student succesfully joined room"});
 });
 
