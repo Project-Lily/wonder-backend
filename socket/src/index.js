@@ -12,6 +12,7 @@ const teacher = require("./endpoints/teacher.js");
 const student = require("./endpoints/student.js");
 
 app.use(cors())
+app.set('trust proxy', true)
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/teacher", teacher)
