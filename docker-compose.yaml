@@ -1,7 +1,7 @@
 version: "3"
 services:
   flask-utils:
-    container_name: flaks-utils
+    container_name: flask-utils
     build: ./flask-utils
     ports:
       - "8080:8080"
