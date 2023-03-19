@@ -20,5 +20,8 @@ function createRoom(data) {
             "id" : data 
         })
     }).then(response => response.json())
-    .then(data => console.log(data));
+    .then(data => {
+        console.log(data)
+        ws.onmessage = (data) => { console.log(data.data) }
+    });
 }

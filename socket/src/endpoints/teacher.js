@@ -14,26 +14,23 @@ router.post("/join", function (req, res) {
     const teacherSocket = clientPool[id];
     const roomName = utils.getRoomName(req.ip);
 
-    console.log(roomName)
     // Initializes the room
     clientRooms[roomName] = {
         "teacher" : teacherSocket,
         "student" : [],
         "questionList" : {}
     }
-
+    
     teacherSocket.on("message", (data) => {
         // Handle browsers sending messages
         const jsonData = JSON.parse(data);
         const room = clientRooms[roomName];
         if(jsonData.eventName === "SEND_QUESTION") 
             teacherSendsQuestion(jsonData, room);
-        else if(jsonData.eventName === "RECEIVE_EVALUATION")
-            // Frontend will not need to evaluate any answers, it will only receive an evaluation (answer is correct or not)
-            console.log("Evaluation sent to frontend")
         else console.log("Unknown event name : ", jsonData.eventName);
     })
-
+    
+    console.log(`Room created at: ${roomName}`)
     return res.status(200).json({msg: "Room succesfully joined"});
 });
 
@@ -50,7 +47,6 @@ function teacherSendsQuestion(jsonData, room) {
         }))
     }
 }
-
 
 router.post("/leave", function (req, res) {
     const id = req.body.id;

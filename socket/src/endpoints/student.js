@@ -23,12 +23,9 @@ router.post("/join", function (req, res) {
         const jsonData = JSON.parse(data);
         const room = clientRooms[roomName];
 
-        if(jsonData.eventName === "RECEIVE_QUESTION") 
-            // This is handled by frontend
-            console.log("Student have received question")
-        else if(jsonData.eventName === "SEND_ANSWER")
+        if(jsonData.eventName === "SEND_ANSWER")
             studentSendsAnswer(jsonData, room, studentSocket)
-        console.log(jsonData)
+        else console.log("Unknown event name : ", jsonData.eventName);
     })
     
     return res.status(200).json({msg: "Student succesfully joined room"});
