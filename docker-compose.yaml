@@ -6,7 +6,6 @@ services:
     ports:
       - "8080:8080"
 
-
   wonder-socket:
     container_name: wonder-socket
     build: ./socket
@@ -16,6 +15,9 @@ services:
   nginx:
     container_name: nginx
     image: nginx:latest
+    depends_on:
+      - flask-utils
+      - wonder-socket
     ports:
       - "80:80"
       - "443:443"
