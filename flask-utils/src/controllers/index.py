@@ -5,17 +5,19 @@ import justext
 from ..config import GCP_TEXT2SPEECH_API_KEY
 from google.cloud import texttospeech
 
-bp = Blueprint("index", __name__, url_prefix="/")
+bp = Blueprint("index", __name__)
 @bp.route("/", methods=["GET", "POST"])
 def index():
     if(request.method == "GET"):
         query_param =  request.args.to_dict()
         url = query_param.get("url")
-        print(url)
 
+        if(url is None):
+            return "Please provide a url"
+
+        output = ""
         response = requests.get(url)
         paragraph = justext.justext(response.content, justext.get_stoplist("English"))
-        output = ""
         for i in paragraph:        
             if not i.is_boilerplate:
                 output += i.text + " "
