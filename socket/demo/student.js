@@ -38,7 +38,7 @@ function reconnect(ws, oldId) {
 
 function joinRoom(data) {
     // MAKE SURE IT'S HTTPS, nginx is cursed
-    fetch("https://lilly.arichernando.com/student/join", {
+    fetch("https://lilly.arichernando.com/node/student/join", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
