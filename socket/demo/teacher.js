@@ -1,16 +1,17 @@
 // Demo example for a teacher connection
-ws = new WebSocket("wss://lilly.arichernando.com/socket")
+ws = new WebSocket("wss://lilly.arichernando.com")
 ws.onopen = (data) => {
-    ws.onmessage = (data) => {
+    ws.onmessage = (data) =>{
         console.log(`My id is : ${data.data}`)
-        joinRoom(data.data)
+        // Creates room and destroys own listener, this is so that this listener doesn't mess with future events
+        createRoom(data.data)
     }
-    console.log("Connected") 
+    console.log("Connected")
 }
 
-function joinRoom(data) {
+function createRoom(data) {
     // MAKE SURE IT'S HTTPS, nginx is cursed
-    fetch("https://lilly.arichernando.com/node/student/join", {
+    fetch("https://lilly.arichernando.com/teacher/join/", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -18,8 +19,7 @@ function joinRoom(data) {
             'Access-Control-Allow-Origin' : '*'
         },
         body: JSON.stringify({
-            "id" : data,
-            "name" : "herbabdo"
+            "id" : data 
         })
     }).then(response => response.json())
     .then(data => {
@@ -27,3 +27,9 @@ function joinRoom(data) {
         ws.onmessage = (data) => { console.log(data.data) }
     });
 }
+
+// ws.send(JSON.stringify({
+//     "eventName" : "SEND_QUESTION",
+//     "question" : "whatever",
+//     "answer" : "the right answer"
+// }))

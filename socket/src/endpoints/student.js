@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { wss, clientPool, clientRooms } = require("../service/websocket")
+
+const { clientPool, clientRooms } = require("../service/globals");
+const { wss } = require("../service/websocket")
 const _ = require("lodash")
-const utils = require("./socket-util")
+const utils = require("./socket-util");
+const { studentListener } = require("../service/studentsocket");
 
 
 // Endpoint below should be used for braille devices
@@ -13,38 +16,20 @@ router.post("/join", function (req, res) {
     
     if(!(id in clientPool)) return res.status(400).json({msg : "ID not found in client pool"});
     if(!(roomName in clientRooms)) return res.status(400).json({msg: "Room not found in room list"});
+    if(!(clientRooms[roomName].student)) clientRooms[roomName].student = []; 
     
     const studentSocket = clientPool[id];
     studentSocket.studentName = name;
+    studentSocket.roomName = roomName;
+    studentSocket.isStudent = true;
     
-    clientRooms[roomName].student.push(studentSocket);
-    studentSocket.on("message", (data) => {
-        // Handle devices sending messages
-        const jsonData = JSON.parse(data);
-        const room = clientRooms[roomName];
-
-        if(jsonData.eventName === "SEND_ANSWER")
-            studentSendsAnswer(jsonData, room, studentSocket)
-        else console.log("Unknown event name : ", jsonData.eventName);
-    })
+    clientRooms[roomName].student.push(id);
+    studentSocket.on("message", studentListener(roomName))
     
     console.log(`A Student at ${req.ip} has joined room ${roomName}`)
+    console.log(clientRooms)
     return res.status(200).json({msg: "Student succesfully joined room"});
 });
-
-
-function studentSendsAnswer(jsonData, room, studentSocket) {
-    const teacherSocket = room.teacher;
-    const question = jsonData.question;
-    const questionList = room.questionList;
-
-    // Evaluates question, sends it to frontend
-    teacherSocket.send(JSON.stringify({
-        "eventName" : "RECEIVE_EVALUATION",
-        "name" : studentSocket.studentName,
-        "evaluation" : (questionList[question] === jsonData.answer)
-    }))
-}
 
 router.post("/leave", function (req, res) {
     const id = req.body.id;
