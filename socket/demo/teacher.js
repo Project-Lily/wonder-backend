@@ -1,4 +1,5 @@
 // Demo example for a teacher connection
+createNewWs()
 
 function createNewWs() {
     ws = new WebSocket("wss://lilly.arichernando.com/socket")
