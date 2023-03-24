@@ -20,20 +20,24 @@ function initWs(httpServer){
 
         client.on("message", (data) => {
             const jsonData = JSON.parse(data)
-            if(jsonData !== "RECONNECT") return;
-            
-            const oldId = jsonData.id;
-
-            const oldSocket =  clientPool[oldId]; 
-            const isStudent = oldSocket.isStudent; 
-
-            client.id = oldId;
-            clientPool[oldId] = client;
-            
-            console.log(clientRooms)
-
-            if(isStudent) client.on("message", studentListener);             
-            else client.on("message", teacherListener);
+            if(jsonData.eventName === "RECONNECT") {
+                const oldId = jsonData.id;
+    
+                const oldSocket = clientPool[oldId];
+                const roomName = oldSocket.roomName;
+                const isStudent = oldSocket.isStudent ? true : false; 
+    
+                client.id = oldId;
+                clientPool[oldId] = client;
+                client.isStudent = isStudent;
+                client.roomName = roomName
+                
+                if(isStudent) {
+                    client.on("message", studentListener(roomName))
+                } else {
+                    client.on("message", teacherListener(roomName))
+                };
+            }
         })
     })
 

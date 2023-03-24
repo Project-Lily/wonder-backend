@@ -4,7 +4,7 @@ createNewWs();
 
 let id;
 function createNewWs() {
-    ws = new WebSocket("wss://lilly.arichernando.com/socket")
+    ws = new WebSocket("ws://localhost:3000")
     ws.onopen = (data) => {
         ws.onmessage = (data) => {
             console.log(`My id is : ${data.data}`)
@@ -16,13 +16,17 @@ function createNewWs() {
     
     ws.onclose = (data) => {
         console.log("Connection closed :c")
-        reconnect(id)
+        if(id) {
+            reconnect(id)
+        } else {
+            createNewWs()
+        }
     }
 }
 
-function reconnect(ws, oldId) {
+function reconnect(oldId) {
     console.log("Attempting reconnection...")
-    ws = new WebSocket("wss://lilly.arichernando.com/socket")
+    ws = new WebSocket("ws://localhost:3000")
     ws.onopen = (data) => {
         console.log("Reconnection successful")
         ws.send(JSON.stringify({
@@ -38,7 +42,7 @@ function reconnect(ws, oldId) {
 
 function joinRoom(data) {
     // MAKE SURE IT'S HTTPS, nginx is cursed
-    fetch("https://lilly.arichernando.com/node/student/join", {
+    fetch("http://localhost:3000/student/join", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
