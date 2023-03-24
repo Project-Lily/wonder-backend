@@ -27,7 +27,6 @@ router.post("/join", function (req, res) {
     studentSocket.on("message", studentListener(roomName))
     
     console.log(`A Student at ${req.ip} has joined room ${roomName}`)
-    console.log(clientRooms)
     return res.status(200).json({msg: "Student succesfully joined room"});
 });
 

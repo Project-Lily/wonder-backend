@@ -23,6 +23,8 @@ function initWs(httpServer){
             if(jsonData.eventName === "RECONNECT") {
                 const oldId = jsonData.id;
     
+                if(!(oldId in clientPool)) return;
+                
                 const oldSocket = clientPool[oldId];
                 const roomName = oldSocket.roomName;
                 const isStudent = oldSocket.isStudent ? true : false; 
@@ -33,6 +35,7 @@ function initWs(httpServer){
                 client.roomName = roomName
                 
                 if(isStudent) {
+                    console.log("asdlfkj")
                     client.on("message", studentListener(roomName))
                 } else {
                     client.on("message", teacherListener(roomName))

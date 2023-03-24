@@ -33,6 +33,7 @@ function reconnect(oldId) {
             "eventName" : "RECONNECT",
             "id" : oldId
         }))
+        ws.onmessage = (data) => { console.log(data.data) }
     }
     ws.onclose = (data) => {
         console.log("Connection closed :c")
