@@ -6,8 +6,9 @@ from ..config import GCP_TEXT2SPEECH_API_KEY
 from google.cloud import texttospeech
 
 bp = Blueprint("index", __name__)
-@bp.route("/", methods=["GET", "POST"])
+@bp.route("/", methods=["GET"])
 def index():
+    output = ""
     if(request.method == "GET"):
         query_param =  request.args.to_dict()
         url = query_param.get("url")
@@ -15,7 +16,6 @@ def index():
         if(url is None):
             return "Please provide a url"
 
-        output = ""
         response = requests.get(url)
         paragraph = justext.justext(response.content, justext.get_stoplist("English"))
         for i in paragraph:        
@@ -28,14 +28,19 @@ def index():
 def textToSpeech():
     if(request.method == "POST"):
         query_param =  request.json
-        print(query_param)
         text = query_param.get("text")
-        print(text)
+        lang = query_param.get("lang")
+        voiceCode = query_param.get("voice-code")
+
+        # https://cloud.google.com/text-to-speech/docs/voices
+        if((voiceCode is None) or (lang is None)):
+            lang = "id-ID"
+            voiceCode = "id-ID-Standard-D"
 
         client = texttospeech.TextToSpeechClient(client_options={"api_key" : GCP_TEXT2SPEECH_API_KEY})
         synthesis_input = texttospeech.SynthesisInput(text=text)
         voice = texttospeech.VoiceSelectionParams(
-            language_code="id-ID", ssml_gender=texttospeech.SsmlVoiceGender.FEMALE, name="id-ID-Standard-D"
+            language_code=lang, name=voiceCode
         )
         audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3
