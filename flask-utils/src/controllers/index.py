@@ -24,14 +24,13 @@ def index():
     return output
 
 
-@bp.route("/text2speech", methods=["POST"])
+@bp.route("/text2speech", methods=["GET"])
 def textToSpeech():
-    if(request.method == "POST"):
-        query_param =  request.json
+    if(request.method == "GET"):
+        query_param =  request.args.to_dict()
         text = query_param.get("text")
         lang = query_param.get("lang")
         voiceCode = query_param.get("voice-code")
-
         # https://cloud.google.com/text-to-speech/docs/voices
         if((voiceCode is None) or (lang is None)):
             lang = "id-ID"
