@@ -52,6 +52,6 @@ def textToSpeech():
         with open("output.mp3", "wb") as out:
             out.write(response.audio_content)
             resp = flask.Response(response.audio_content)
-            resp.headers['Content-Type'] = "audio/wav"
+            resp.headers['Content-Type'] = "audio/mpeg"
             return resp
     return "Error"
