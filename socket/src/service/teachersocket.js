@@ -13,10 +13,9 @@ function teacherListener(rname) {
     }
 }
 
-
-
 function teacherSendsQuestion(jsonData, room) {
     if(!room.questionList) room.questionList = {};
+    if(!room.student) room.student = [];
 
     room.questionList[jsonData.question] = jsonData.answer;
     const students = room.student

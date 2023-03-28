@@ -2,7 +2,7 @@
 createNewWs()
 
 function createNewWs() {
-    ws = new WebSocket("wss://lilly.arichernando.com/socket")
+    ws = new WebSocket("ws://localhost:3000")
     ws.onopen = (data) => {
         ws.onmessage = (data) =>{
             console.log(`My id is : ${data.data}`)
@@ -21,7 +21,7 @@ function createNewWs() {
 
 function createRoom(data) {
     // MAKE SURE IT'S HTTPS, nginx is cursed
-    fetch("https://lilly.arichernando.com/node/teacher/join/", {
+    fetch("http://localhost:3000/teacher/join/", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
