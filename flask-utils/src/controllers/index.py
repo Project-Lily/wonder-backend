@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
+import flask
 import requests
 import justext
 
@@ -50,5 +51,7 @@ def textToSpeech():
         )
         with open("output.mp3", "wb") as out:
             out.write(response.audio_content)
-            return response.audio_content
+            resp = flask.Response(response.audio_content)
+            resp.headers['Content-Type'] = "audio/wav"
+            return resp
     return "Error"
