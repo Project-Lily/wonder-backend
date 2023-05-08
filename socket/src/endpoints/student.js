@@ -7,7 +7,6 @@ const _ = require("lodash")
 const utils = require("./socket-util");
 const { studentListener } = require("../service/studentsocket");
 
-
 // Endpoint below should be used for braille devices
 router.post("/join", function (req, res) {
     const id = req.body.id;

@@ -1,8 +1,9 @@
+
 // Demo example for a teacher connection
 createNewWs()
 
 function createNewWs() {
-    ws = new WebSocket("ws://localhost:3000")
+    ws = new WebSocket("ws://localhost/socket")
     ws.onopen = (data) => {
         ws.onmessage = (data) =>{
             console.log(`My id is : ${data.data}`)

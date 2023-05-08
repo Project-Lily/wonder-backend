@@ -1,14 +1,15 @@
+# Should be put at project root alongside nginx folder
 version: "3"
 services:
   flask-utils:
     container_name: flask-utils
-    build: ./flask-utils
+    build: ./wonder-backend/flask-utils
     ports:
       - "5000:5000"
 
   wonder-socket:
     container_name: wonder-socket
-    build: ./socket
+    build: ./wonder-backend/socket
     ports:
       - "3000:3000"
 
@@ -25,8 +26,16 @@ services:
       - ./etc/letsencrypt:/etc/letsencrypt
       - ./nginx/nginx.conf:/etc/nginx/templates/default.conf.template
       - ./data/certbot:/var/www/certbot
+      - fe-build:/app/dist
     environment:
       - NGINX_DOMAIN=${DOMAIN}
+
+  frontend:
+    depends_on:
+      - nginx
+    build: ./wonder-webapp
+    volumes:
+      - fe-build:/app/dist
 
   certbot:
     image: certbot/certbot
@@ -36,3 +45,6 @@ services:
     - ./etc/letsencrypt:/etc/letsencrypt
     - ./data/certbot:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  fe-build:
